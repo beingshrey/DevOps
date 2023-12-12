@@ -3,122 +3,38 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shopping List App</title>
+  <title>Color Change App</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      margin: 20px;
-    }
- 
-    #cart {
-      border: 1px solid #ccc;
-      padding: 10px;
-      margin-bottom: 20px;
-    }
- 
-    #products {
       display: flex;
-      flex-wrap: wrap;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
     }
  
-    .product {
-      border: 1px solid #ccc;
+    button {
       margin: 10px;
       padding: 10px;
-      text-align: center;
-    }
- 
-    #manualAdd {
-      margin-top: 20px;
+      font-size: 16px;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
  
-  <h1>Shopping List App</h1>
+  <h1>Color Change App</h1>
  
-  <div id="cart">
-    <h2>Active List</h2>
-    <ul id="cart-items"></ul>
-  </div>
- 
-  <div id="products">
-    <div class="product" data-name="Milk">
-      <h3>Milk</h3>
-      <button onclick="addToCart('Milk')">Add to Cart</button>
-    </div>
- 
-    <div class="product" data-name="Eggs">
-      <h3>Eggs</h3>
-      <button onclick="addToCart('Eggs')">Add to Cart</button>
-    </div>
- 
-    <div class="product" data-name="Bread">
-      <h3>Bread</h3>
-      <button onclick="addToCart('Bread')">Add to Cart</button>
-    </div>
- 
-    <div class="product" data-name="Chicken">
-      <h3>Chicken</h3>
-      <button onclick="addToCart('Chicken')">Add to Cart</button>
-    </div>
- 
-    <div class="product" data-name="Tomatoes">
-      <h3>Tomatoes</h3>
-      <button onclick="addToCart('Tomatoes')">Add to Cart</button>
-    </div>
-  </div>
- 
-  <div id="manualAdd">
-    <h2>Add Item Manually</h2>
-    <label for="manualItemName">Item Name:</label>
-    <input type="text" id="manualItemName">
-    <button onclick="addManualItem()">Add to Cart</button>
-  </div>
+  <button onclick="changeColor('red')">Red</button>
+  <button onclick="changeColor('green')">Green</button>
+  <button onclick="changeColor('blue')">Blue</button>
+  <button onclick="changeColor('yellow')">Yellow</button>
  
   <script>
-    var cartItems = [];
- 
-    function addToCart(name) {
-      cartItems.push({ name, manuallyAdded: true });
-      updateCart();
-    }
- 
-    function addManualItem() {
-      var manualItemName = document.getElementById("manualItemName").value;
- 
-      if (manualItemName) {
-        addToCart(manualItemName);
-        document.getElementById("manualItemName").value = "";
-      } else {
-        alert("Please enter valid item details.");
-      }
-    }
- 
-    function removeItem(index) {
-      cartItems.splice(index, 1);
-      updateCart();
-    }
- 
-    function updateCart() {
-      var cartItemsElement = document.getElementById("cart-items");
- 
-      cartItemsElement.innerHTML = "";
- 
-      // Populate cart items
-      cartItems.forEach(function (item, index) {
-        var listItem = document.createElement("li");
-        listItem.textContent = `${item.name}`;
-       
-        if (item.manuallyAdded) {
-          var removeButton = document.createElement("button");
-          removeButton.textContent = "Remove";
-          removeButton.onclick = function() { removeItem(index); };
-          listItem.appendChild(removeButton);
-        }
- 
-        cartItemsElement.appendChild(listItem);
-      });
+    function changeColor(color) {
+      document.body.style.backgroundColor = color;
     }
   </script>
  
