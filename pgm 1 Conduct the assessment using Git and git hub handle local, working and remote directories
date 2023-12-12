@@ -1,39 +1,126 @@
-$git init                  //this initializes the library and assign the work of directory
-$git clone                  // maps the entire repository and features the significant of working directory
-
-Synchronizing repositories 
-
-Commands 
-$git remote add  origin <link>                  //extract only the https link from your created git hub repository
-                                                Now for pulling the contents from remote repository perform 
-$git pull origin main/master                    // this enables the items of remote repo to  local directory created  
-                                                                    folder//
-                                                Changes to local directory
-                                                Now create the text file in your local repository and check the status in your git bash
-                                                Command
-$git status                                     //update the status of the created file in your working directory with red high light
-                                                Now add the contents to stating area by typing
-$git add <createdfile.txt.>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shopping List App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
  
-                                                  After this commit the file by operation of commit
-$git commit                                        //this commit total commits corresponding to the created files//
-
-                                                  Creating the branches 
-
-                                                  Commands
-$git branch new_branch                            //this creates newer branch by adding the new one
-$git new_branch checkout                             // take the working directory from master to new branch
-                                                  Now in your local directory create few more file and edit the file of the earlier created
-$git status
-$git add .                                        //this add total files on the local directory 
-                                                  Again checkout to master
-$git checkout master  
-                                                  Edit the file in your local repo
-                                                  It should not list the files of new branch
-                                                  Check by typing 
-$git checkout new_branch
-$ls
-
-                                                Push your local directory files to remote repository
-$git push origin master/main
-                                                  All the files need to be popped in your remote github repository
+    #cart {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-bottom: 20px;
+    }
+ 
+    #products {
+      display: flex;
+      flex-wrap: wrap;
+    }
+ 
+    .product {
+      border: 1px solid #ccc;
+      margin: 10px;
+      padding: 10px;
+      text-align: center;
+    }
+ 
+    #manualAdd {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+ 
+  <h1>Shopping List App</h1>
+ 
+  <div id="cart">
+    <h2>Active List</h2>
+    <ul id="cart-items"></ul>
+  </div>
+ 
+  <div id="products">
+    <div class="product" data-name="Milk">
+      <h3>Milk</h3>
+      <button onclick="addToCart('Milk')">Add to Cart</button>
+    </div>
+ 
+    <div class="product" data-name="Eggs">
+      <h3>Eggs</h3>
+      <button onclick="addToCart('Eggs')">Add to Cart</button>
+    </div>
+ 
+    <div class="product" data-name="Bread">
+      <h3>Bread</h3>
+      <button onclick="addToCart('Bread')">Add to Cart</button>
+    </div>
+ 
+    <div class="product" data-name="Chicken">
+      <h3>Chicken</h3>
+      <button onclick="addToCart('Chicken')">Add to Cart</button>
+    </div>
+ 
+    <div class="product" data-name="Tomatoes">
+      <h3>Tomatoes</h3>
+      <button onclick="addToCart('Tomatoes')">Add to Cart</button>
+    </div>
+  </div>
+ 
+  <div id="manualAdd">
+    <h2>Add Item Manually</h2>
+    <label for="manualItemName">Item Name:</label>
+    <input type="text" id="manualItemName">
+    <button onclick="addManualItem()">Add to Cart</button>
+  </div>
+ 
+  <script>
+    var cartItems = [];
+ 
+    function addToCart(name) {
+      cartItems.push({ name, manuallyAdded: true });
+      updateCart();
+    }
+ 
+    function addManualItem() {
+      var manualItemName = document.getElementById("manualItemName").value;
+ 
+      if (manualItemName) {
+        addToCart(manualItemName);
+        document.getElementById("manualItemName").value = "";
+      } else {
+        alert("Please enter valid item details.");
+      }
+    }
+ 
+    function removeItem(index) {
+      cartItems.splice(index, 1);
+      updateCart();
+    }
+ 
+    function updateCart() {
+      var cartItemsElement = document.getElementById("cart-items");
+ 
+      cartItemsElement.innerHTML = "";
+ 
+      // Populate cart items
+      cartItems.forEach(function (item, index) {
+        var listItem = document.createElement("li");
+        listItem.textContent = `${item.name}`;
+       
+        if (item.manuallyAdded) {
+          var removeButton = document.createElement("button");
+          removeButton.textContent = "Remove";
+          removeButton.onclick = function() { removeItem(index); };
+          listItem.appendChild(removeButton);
+        }
+ 
+        cartItemsElement.appendChild(listItem);
+      });
+    }
+  </script>
+ 
+</body>
+</html>
