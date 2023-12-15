@@ -28,3 +28,28 @@ https://randomuser.me/api/?results=5
    </script>
  </body>
 </html>
+
+
+const appendtoHtml = (data) => {
+ //data is array of object
+ for (let user of data) {
+   let tr = document.createElement("tr");
+   let td_1 = document.createElement("td");
+   let td_2 = document.createElement("td");
+
+
+   td_1.innerHTML = user.name;
+   td_2.innerHTML = user.email;
+
+
+   tr.appendChild(td_1);
+   tr.appendChild(td_2);
+
+
+document.getElementById("myTable").appendChild(tr);
+ }
+};
+
+
+getRemoteData(api_url);
+
