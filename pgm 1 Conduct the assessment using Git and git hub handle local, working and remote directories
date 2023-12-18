@@ -1,55 +1,109 @@
-const api_url = "https://jsonplaceholder.typicode.com/users";
+import "./App.css";
+import Greet from "./Components/Greet";
+import Pupil from "./Components/Pupil";
+import Fruits from "./Components/Fruits";
+import Student from "./Components/Student";
 
 
-let getRemoteData = (api) => {
- fetch(api)
-   .then((res) => res.json()) //promise again
-   .then((data) => appendtoHtml(data)) //handle the second promise
-   .catch((error) => console.log(error));
-};
-
-https://randomuser.me/api/?results=5
+function App() {
+ const personInfo = {
+   email: "abc@gmail.com",
+   fullname: "Peter Parker",
+ };
 
 
-<!DOCTYPE html>
-<html lang="en">
- <head>
-   <meta charset="UTF-8" />
-   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-   <title>Document</title>
- </head>
- <body>
-   <script>
-     fetch("https://jsonplaceholder.typicode.com/users")
-       .then((res) => res.json())
-       .then((data) => console.log(data))
-       .catch((error) => console.log("Error", error));
-   </script>
- </body>
-</html>
+ const fruits = ["apple", "mango", "Guava", "Orange"];
 
 
-const appendtoHtml = (data) => {
- //data is array of object
- for (let user of data) {
-   let tr = document.createElement("tr");
-   let td_1 = document.createElement("td");
-   let td_2 = document.createElement("td");
+ const studentDetails = [
+   { id: 1001, name: "Rose", gender: "Female" },
+   { id: 1002, name: "Peter", gender: "Male" },
+   { id: 1003, name: "John", gender: "Male" },
+   { id: 1004, name: "Kerry", gender: "Female" },
+ ];
 
 
-   td_1.innerHTML = user.name;
-   td_2.innerHTML = user.email;
+ return (
+   <>
+     <Greet name="Peter" age={23} isAdmin={true} />
+     <Pupil personInfo={personInfo} />
+     <Fruits fruits={fruits} />
+     <Student students = {studentDetails}/>
+   </>
+ );
+}
 
 
-   tr.appendChild(td_1);
-   tr.appendChild(td_2);
+export default App;
+
+Students.js
+
+import React from "react";
 
 
-document.getElementById("myTable").appendChild(tr);
- }
-};
+function Student({ students }) {
+ return (
+   <>
+     <h2>Props with array of objects</h2>
 
 
-getRemoteData(api_url);
+     {students.map((std) => (
+       <li>
+         {std.id},{std.name},{std.gender}
+       </li>
+     ))}
+   </>
+ );
+}
 
+
+export default Student;
+
+
+Pupil.js
+
+import React from 'react'
+
+
+const Pupil = (props) => {
+
+
+   let {email,fullname} = props.personInfo
+  
+ return (
+  <div>
+       <h2>Props with single object</h2>
+       {email},
+       {fullname}
+  </div>
+ )
+}
+
+
+export default Pupil
+
+
+Fruits.js
+
+//rafce or rfce
+
+
+import React from 'react'
+
+
+
+
+const Fruits = ({fruits}) => {
+
+
+ return (
+   <div>
+       {
+           fruits.map(item=>(<h4>{item}</h4>))
+       }
+   </div>
+ )
+}
+
+
+export default Fruits
