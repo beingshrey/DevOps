@@ -1,40 +1,32 @@
 import React, { useState } from "react";
-
-
+import 'bootstrap/dist/css/bootstrap.css';
+ 
 function TodoMain() {
  const [username, setUsername] = useState("Peter");
-
-
+ 
  const [todoItems, setTodoItems] = useState([
    { action: "Buy Flowers", done: false },
    { action: "Walk the Dog", done: false },
    { action: "Collect Tickets", done: false },
    { action: "Meeting at 5", done: false },
  ]);
-
-
+ 
  const [newTodo, setNewTodo] = useState();
-
-
+ const [showCompleted, setShowCompleted] = useState(false);
+ 
  const toggleTodo = (item) => {
-   // todo =    { action: "Buy Flowers", done: false },
-   //item =  { action: "Buy Flowers", done: false },
-
-
    setTodoItems(
      todoItems.map((todo) =>
        todo.action === item.action ? { ...todo, done: !todo.done } : todo
      )
    );
-
-
-   console.log(todoItems);
  };
-
-
+ 
  const todoTableRows = () => {
-   return todoItems.map((item) => (
-     <tr>
+   const itemsToDisplay = showCompleted ? todoItems.filter(item => item.done) : todoItems;
+ 
+   return itemsToDisplay.map((item) => (
+     <tr key={item.action}>
        <td>{item.action}</td>
        <td>
          <input
@@ -46,20 +38,17 @@ function TodoMain() {
      </tr>
    ));
  };
-
-
+ 
  const AddTodo = () => {
-   const foundTodo = todoItems.find((item) => item.action === newTodo);
-
-
+   const foundTodo = todoItems.find((item) => item.action.toLowerCase() === newTodo.toLowerCase());
+ 
    if (foundTodo) {
      alert("Oops already existed");
    } else {
      setTodoItems([...todoItems, { action: newTodo, done: false }]);
    }
  };
-
-
+ 
  return (
    <div className="container">
      <div className="row">
@@ -68,14 +57,12 @@ function TodoMain() {
            {username}'s Todo List (
            {
              todoItems.filter((todo) => !todo.done).length
-             // todo =  { action: "Buy Flowers", done: false }
            }{" "}
            items to do)
          </h4>
        </div>
      </div>
-
-
+ 
      <div className="row mb-4">
        <div className="col-10">
          <input
@@ -83,16 +70,24 @@ function TodoMain() {
            onChange={(event) => setNewTodo(event.target.value)}
          />
        </div>
-
-
        <div className="col-2">
          <button className="btn btn-sm btn-primary" onClick={AddTodo}>
            Add Todo
          </button>
        </div>
      </div>
-
-
+ 
+     <div className="row mb-4">
+       <div className="col-12 text-center">
+         <button
+           className="btn btn-sm btn-primary"
+           onClick={() => setShowCompleted(!showCompleted)}
+         >
+           {showCompleted ? "Hide Completed" : "Show Completed"}
+         </button>
+       </div>
+     </div>
+ 
      <div className="row">
        <div className="col-md-12">
          <table className="table table-bordered">
@@ -109,16 +104,5 @@ function TodoMain() {
    </div>
  );
 }
-
-
+ 
 export default TodoMain;
-
-
-/*
-filter returns an array and only takes the true values inside it
-! changes the true value
-
-
-true => false
-false => true
-*/
