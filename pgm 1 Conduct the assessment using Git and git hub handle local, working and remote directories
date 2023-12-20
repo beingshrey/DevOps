@@ -1,108 +1,113 @@
-import React, { useState } from "react";
-import 'bootstrap/dist/css/bootstrap.css';
- 
-function TodoMain() {
- const [username, setUsername] = useState("Peter");
- 
- const [todoItems, setTodoItems] = useState([
-   { action: "Buy Flowers", done: false },
-   { action: "Walk the Dog", done: false },
-   { action: "Collect Tickets", done: false },
-   { action: "Meeting at 5", done: false },
- ]);
- 
- const [newTodo, setNewTodo] = useState();
- const [showCompleted, setShowCompleted] = useState(false);
- 
- const toggleTodo = (item) => {
-   setTodoItems(
-     todoItems.map((todo) =>
-       todo.action === item.action ? { ...todo, done: !todo.done } : todo
-     )
-   );
- };
- 
- const todoTableRows = () => {
-   const itemsToDisplay = showCompleted ? todoItems.filter(item => item.done) : todoItems;
- 
-   return itemsToDisplay.map((item) => (
-     <tr key={item.action}>
-       <td>{item.action}</td>
-       <td>
-         <input
-           type="checkbox"
-           checked={item.done}
-           onChange={() => toggleTodo(item)}
-         />
-       </td>
-     </tr>
-   ));
- };
- 
- const AddTodo = () => {
-   const foundTodo = todoItems.find((item) => item.action.toLowerCase() === newTodo.toLowerCase());
- 
-   if (foundTodo) {
-     alert("Oops already existed");
-   } else {
-     setTodoItems([...todoItems, { action: newTodo, done: false }]);
-   }
- };
- 
+Menu.js
+
+import React from "react";
+import { Link } from "react-router-dom";
+
+
+function Menu() {
  return (
-   <div className="container">
-     <div className="row">
-       <div className="col-md-12">
-         <h4 className="bg-primary text-white text-center">
-           {username}'s Todo List (
-           {
-             todoItems.filter((todo) => !todo.done).length
-           }{" "}
-           items to do)
-         </h4>
+   <nav className="navbar navbar-expand-lg  bg-success">
+     <div className="container-fluid">
+       <Link className="navbar-brand text-white" href="#">
+         K O E N I G
+       </Link>
+       <button
+         className="navbar-toggler"
+         type="button"
+         data-bs-toggle="collapse"
+         data-bs-target="#navbarNavAltMarkup"
+         aria-controls="navbarNavAltMarkup"
+         aria-expanded="false"
+         aria-label="Toggle navigation"
+       >
+         <span className="navbar-toggler-icon"></span>
+       </button>
+       <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
+         <div className="navbar-nav">
+           <Link
+             className="nav-link active text-white"
+             aria-current="page"
+             to="/home"
+           >
+             Home
+           </Link>
+           <Link className="nav-link text-white" to="/about">
+             About
+           </Link>
+         </div>
        </div>
      </div>
- 
-     <div className="row mb-4">
-       <div className="col-10">
-         <input
-           type="text"
-           onChange={(event) => setNewTodo(event.target.value)}
-         />
-       </div>
-       <div className="col-2">
-         <button className="btn btn-sm btn-primary" onClick={AddTodo}>
-           Add Todo
-         </button>
-       </div>
-     </div>
- 
-     <div className="row mb-4">
-       <div className="col-12 text-center">
-         <button
-           className="btn btn-sm btn-primary"
-           onClick={() => setShowCompleted(!showCompleted)}
-         >
-           {showCompleted ? "Hide Completed" : "Show Completed"}
-         </button>
-       </div>
-     </div>
- 
-     <div className="row">
-       <div className="col-md-12">
-         <table className="table table-bordered">
-           <thead>
-             <tr>
-               <th>Description</th>
-               <th>Done</th>
-             </tr>
-           </thead>
-           <tbody>{todoTableRows()}</tbody>
-         </table>
-       </div>
-     </div>
-   </div>
+   </nav>
  );
 }
- 
-export default TodoMain;
+
+
+export default Menu;
+
+
+App.js
+
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import "./App.css";
+import Menu from "./Menu";
+import About from "./Pages/About";
+import Home from "./Pages/Home";
+
+
+function App() {
+ return (
+   <BrowserRouter>
+     <Menu/>
+     <Routes>
+       <Route path="/home" element={<Home />} />
+       <Route path="/about" element={<About />} />
+     </Routes>
+   </BrowserRouter>
+ );
+}
+
+
+export default App;
+
+
+
+Home.js
+
+import React from 'react'
+
+
+const Home = () => {
+ return (
+   <div className='container mt-4'>
+       <h1>Home Page</h1>
+       <p>
+           Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+
+
+       </p>
+   </div>
+ )
+}
+
+
+export default Home
+
+
+About.js
+
+import React from 'react'
+
+
+const About = () => {
+ return (
+   <div className='container mt-4'>
+       <h1>About Page</h1>
+       <p>
+           Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+       </p>
+   </div>
+ )
+}
+
+
+export default About
