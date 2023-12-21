@@ -1,10 +1,112 @@
+Role Authorisation with login/logout
+
+
+Login.js
+
+import React, { useState } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
+
+
+const Login = () => {
+ const [loginDetails, setLoginDetails] = useState({
+   username: "",
+   password: "",
+ });
+
+
+
+
+ const navigate = useNavigate()
+
+
+
+
+ const handleLogin = () => {
+
+
+   if(loginDetails.username === 'admin' && loginDetails.password ==='admin')
+   {
+       sessionStorage.setItem('role','admin')
+       navigate('/about')
+   }
+
+
+   else{
+       sessionStorage.setItem('role','guest')
+       navigate('/home')
+   }
+ };
+
+
+ const handleChange = (event) => {
+   setLoginDetails({
+     ...loginDetails,
+     [event.target.name]: event.target.value,
+   });
+ };
+ return (
+   <div className="container mt-4">
+     <p>
+       <label className="form-label">Username</label>
+       {/* <input type="text" name='username' onChange={(event)=>setLoginDetails({...loginDetails,username:event.target.value})}/> */}
+       <input type="username" name="username" onChange={handleChange} className="form-control" />
+     </p>
+
+
+     <p>
+       <label className="form-label">Password</label>
+       {/* <input type="password" name="password"  onChange={(event)=>setLoginDetails({...loginDetails,password:event.target.value})} /> */}
+       <input type="password" name="password" onChange={handleChange}  className="form-control" />
+     </p>
+
+
+     <p>
+       <button onClick={handleLogin} type="button" className="btn btn-sm btn-primary">Login</button>
+     </p>
+   </div>
+ );
+};
+
+
+export default Login;
+
+
+
+
 Menu.js
 
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 
 
 function Menu() {
+ const [role, setRole] = useState();
+
+
+ const location = useLocation();
+
+
+ const navigate = useNavigate()
+
+
+ useEffect(() => {
+   let myrole = sessionStorage.getItem("role");
+   setRole(myrole);
+ }, [location.pathname]);
+
+
+
+
+ const handleLogout=()=>{
+     sessionStorage.removeItem('role')
+     navigate('/login')
+
+
+ }
+
+
+
+
  return (
    <nav className="navbar navbar-expand-lg  bg-success">
      <div className="container-fluid">
@@ -24,16 +126,38 @@ function Menu() {
        </button>
        <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
          <div className="navbar-nav">
-           <Link
-             className="nav-link active text-white"
-             aria-current="page"
-             to="/home"
-           >
-             Home
-           </Link>
-           <Link className="nav-link text-white" to="/about">
-             About
-           </Link>
+           {role === "admin" ? (
+             <>
+               <Link
+                 className="nav-link active text-white"
+                 aria-current="page"
+                 to="/home"
+               >
+                 Home
+               </Link>
+               <Link className="nav-link text-white" to="/about">
+                 About
+               </Link>
+               <button className="nav-link text-bg-danger" onClick={handleLogout}>Logout</button>
+             </>
+           ) : role === "guest" ? (
+             <>
+               <Link
+                 className="nav-link active text-white"
+                 aria-current="page"
+                 to="/home"
+               >
+                 Home
+               </Link>
+
+
+               <button className="nav-link text-bg-danger" onClick={handleLogout}>Logout</button>
+             </>
+           ) : (
+             <Link className="nav-link text-white" to="/login">
+               Login
+             </Link>
+           )}
          </div>
        </div>
      </div>
@@ -45,13 +169,21 @@ function Menu() {
 export default Menu;
 
 
+
+
+
+
+
+
 App.js
 
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import "./App.css";
 import Menu from "./Menu";
 import About from "./Pages/About";
 import Home from "./Pages/Home";
+import Login from "./Pages/Login";
+import PageNotFound from "./Pages/PageNotFound";
 
 
 function App() {
@@ -59,8 +191,11 @@ function App() {
    <BrowserRouter>
      <Menu/>
      <Routes>
+       <Route path="/" element={<Navigate to="/login"/>}/>
        <Route path="/home" element={<Home />} />
        <Route path="/about" element={<About />} />
+       <Route path="/login" element={<Login />} />
+       <Route path="*" element={<PageNotFound/>}/>
      </Routes>
    </BrowserRouter>
  );
@@ -68,46 +203,3 @@ function App() {
 
 
 export default App;
-
-
-
-Home.js
-
-import React from 'react'
-
-
-const Home = () => {
- return (
-   <div className='container mt-4'>
-       <h1>Home Page</h1>
-       <p>
-           Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-
-
-       </p>
-   </div>
- )
-}
-
-
-export default Home
-
-
-About.js
-
-import React from 'react'
-
-
-const About = () => {
- return (
-   <div className='container mt-4'>
-       <h1>About Page</h1>
-       <p>
-           Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-       </p>
-   </div>
- )
-}
-
-
-export default About
